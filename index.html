@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SKILL → CAREER: Turn your skills into your next career with AI-grade career matching, interactive roadmaps, and skill gap intelligence.">
+  <title>SKILL → CAREER | Intelligent Career Discovery & Roadmaps</title>
+  
+  <!-- Modern Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Background Glow & Particles effect -->
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <div class="grid-overlay"></div>
+
+  <!-- Header / Nav -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <span class="logo-badge">AI MATCH</span>
+        <span class="logo-text">SKILL <span class="gradient-text">→ CAREER</span></span>
+      </div>
+      <p class="nav-tagline hide-mobile">“Turn your skills into your next career.”</p>
+      <div class="nav-actions">
+        <button id="themeToggleBtn" class="glass-btn icon-btn" title="Toggle Light/Dark Theme" aria-label="Toggle theme">
+          <span class="theme-icon">🌙</span>
+        </button>
+        <button id="resetAllBtn" class="glass-btn secondary-btn" title="Reset all selections">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          Reset All
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-badge">
+      <span class="pulse-dot"></span> Next-Gen Career Discovery Platform
+    </div>
+    <h1 class="hero-title">
+      Turn your skills into your <br><span class="gradient-text">next high-impact career</span>
+    </h1>
+    <p class="hero-subtext">
+      Select your superpowers below. Our intelligent algorithmic engine analyzes your skill stack, computes compatibility indices, maps the skill gap, and produces step-by-step career roadmaps.
+    </p>
+    
+    <!-- Quick Stats Bar -->
+    <div class="quick-stats-strip">
+      <div class="stat-item">
+        <span class="stat-number" id="selectedSkillsCount">0</span>
+        <span class="stat-label">Skills Selected</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-number" id="matchedCareersCount">0</span>
+        <span class="stat-label">Matched Paths</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-number" id="topMatchScore">0%</span>
+        <span class="stat-label">Top Match Rate</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Discovery App Container -->
+  <main class="app-layout">
+    
+    <!-- LEFT PANEL: Skill Selector & Skill Matrix -->
+    <section class="panel skill-selector-panel">
+      <div class="panel-header">
+        <div class="panel-title-wrapper">
+          <span class="panel-icon">⚡</span>
+          <h2>Select Your Skills</h2>
+        </div>
+        <button id="clearSkillsBtn" class="text-btn">Clear</button>
+      </div>
+      <p class="panel-desc">Click to toggle skills you currently possess or are comfortable with:</p>
+
+      <div class="skills-grid" id="skillsContainer">
+        <!-- Injected dynamically via JS with accessible data attributes -->
+      </div>
+
+      <!-- Skill Selection Summary Box -->
+      <div class="selected-summary-box glass-card">
+        <div class="summary-header">
+          <span class="summary-title">Active Skill Stack</span>
+          <span class="chip-count" id="activeStackCount">0 skills</span>
+        </div>
+        <div class="active-chips-container" id="activeChipsContainer">
+          <span class="placeholder-text">No skills selected yet. Tap above to begin discovering!</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT/MAIN PANEL: Dynamic Results & Career Cards -->
+    <section class="panel career-results-panel">
+      <div class="panel-header">
+        <div class="panel-title-wrapper">
+          <span class="panel-icon">🎯</span>
+          <h2>Matched Career Paths</h2>
+        </div>
+        <div class="filter-controls">
+          <label for="sortFilter" class="sr-only">Sort Careers</label>
+          <select id="sortFilter" class="glass-select">
+            <option value="match-desc">Sort: Highest Match</option>
+            <option value="difficulty-asc">Sort: Beginner Friendly</option>
+            <option value="name-asc">Sort: Name (A-Z)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Dynamic Message banner if 0 selected -->
+      <div id="noSkillsPrompt" class="glass-card empty-state">
+        <div class="empty-icon-wrap">🧭</div>
+        <h3>Ready to chart your roadmap?</h3>
+        <p>Pick one or more skills from the left panel to trigger the AI-grade career match engine.</p>
+        <div class="preset-suggestions">
+          <span>Try quick presets:</span>
+          <button class="preset-btn" data-preset="tech">💻 Web Developer Stack</button>
+          <button class="preset-btn" data-preset="ai-data">🤖 Data & AI Stack</button>
+          <button class="preset-btn" data-preset="product">📈 Product & Design</button>
+        </div>
+      </div>
+
+      <!-- Career Cards Grid -->
+      <div class="career-cards-grid" id="careerCardsGrid" style="display: none;">
+        <!-- Injected dynamically via JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- INTERACTIVE ROADMAP & SKILL GAP MODAL / EXPANDED SECTION -->
+  <section id="deepDiveSection" class="deep-dive-section" style="display: none;">
+    <div class="section-container">
+      
+      <div class="deep-dive-header">
+        <div class="header-left">
+          <button id="closeDeepDiveBtn" class="back-link-btn">
+            ← Back to All Careers
+          </button>
+          <div class="deep-dive-title-row">
+            <h2 id="deepDiveCareerName" class="gradient-text">Software Developer</h2>
+            <span id="deepDiveBadge" class="match-pill">90% Match</span>
+          </div>
+          <p id="deepDiveTagline" class="deep-dive-sub">Architecting reliable software services and scalable web ecosystems.</p>
+        </div>
+        
+        <div class="header-right-meta">
+          <div class="meta-box">
+            <span class="meta-label">Difficulty</span>
+            <span id="deepDiveDifficulty" class="meta-val">Moderate</span>
+          </div>
+          <div class="meta-box">
+            <span class="meta-label">Est. Timeframe</span>
+            <span id="deepDiveTimeline" class="meta-val">6 - 9 Months</span>
+          </div>
+          <div class="meta-box">
+            <span class="meta-label">Market Demand</span>
+            <span id="deepDiveDemand" class="meta-val high-demand">Very High 🔥</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRID: Skill Gap Analysis + Interactive Stepper Roadmap -->
+      <div class="deep-dive-grid">
+        
+        <!-- FEATURE: Skill Gap Intelligence Card -->
+        <div class="deep-dive-card glass-card skill-gap-card">
+          <div class="card-tag">GAP ANALYSIS</div>
+          <h3>Skill Gap Intelligence</h3>
+          <p class="section-microtext">Instant breakdown between your current skills and target role qualifications.</p>
+
+          <div class="gap-metrics-grid">
+            <div class="gap-metric-box metric-possessed">
+              <span class="metric-num" id="gapHaveCount">0</span>
+              <span class="metric-title">You Already Have</span>
+              <div class="gap-skill-tags" id="gapHaveList"></div>
+            </div>
+
+            <div class="gap-metric-box metric-missing">
+              <span class="metric-num" id="gapNeedCount">0</span>
+              <span class="metric-title">You Should Learn</span>
+              <div class="gap-skill-tags" id="gapNeedList"></div>
+            </div>
+          </div>
+
+          <!-- Recommended Next Step Card -->
+          <div class="next-step-box">
+            <div class="next-step-icon">🚀</div>
+            <div class="next-step-content">
+              <div class="next-step-heading">Recommended Next Step</div>
+              <div class="next-step-desc" id="recommendedNextStep">
+                Build a portfolio web application highlighting end-to-end integration and responsive design.
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Action Button -->
+          <div class="gap-cta-row">
+            <button id="markGapAcquiredBtn" class="glass-btn primary-btn w-full">
+              ⚡ Mark Key Gap as Learned
+            </button>
+          </div>
+        </div>
+
+        <!-- FEATURE: Interactive Career Roadmap & Timeline -->
+        <div class="deep-dive-card glass-card roadmap-card">
+          <div class="roadmap-card-header">
+            <div>
+              <div class="card-tag">ACTION PLAN</div>
+              <h3>Visual Progress Roadmap</h3>
+            </div>
+            <!-- Progress Tracker -->
+            <div class="roadmap-overall-progress">
+              <div class="progress-info">
+                <span>Phase Progress</span>
+                <span id="roadmapProgressPercent">0%</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div id="roadmapProgressBar" class="progress-bar-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <p class="section-microtext">Click phases to inspect milestone targets, project blueprints, and curriculum resources.</p>
+
+          <!-- Interactive Timeline Steps -->
+          <div class="timeline-stepper" id="roadmapTimeline">
+            <!-- Populated via JS with 4 phases: Foundations, Core Skills, Projects to Build, Career Path / Launch -->
+          </div>
+
+          <!-- Project Showcase Blueprint Box -->
+          <div class="projects-blueprint-box">
+            <div class="blueprint-header">
+              <span class="blueprint-icon">🛠️</span>
+              <h4>Signature Capstone Projects to Build</h4>
+            </div>
+            <div class="project-cards-row" id="capstoneProjectsRow">
+              <!-- Injected dynamically -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-left">
+        <span class="footer-logo">SKILL <span class="gradient-text">→ CAREER</span></span>
+        <p>Interactive career intelligence platform engineered for ambitious engineers, designers, and creators.</p>
+      </div>
+      <div class="footer-right">
+        <span class="badge-tech">Vanilla JS & CSS3 Architecture</span>
+        <span class="badge-tech">Zero External Heavy Dependencies</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
